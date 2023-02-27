@@ -60,7 +60,6 @@ minimum 1 boss par étage (peut contenir boss bonus(tout les X etage pax exemple
 ### Objet
 
 #### upgrader
-
 Augmante les stats en dépit d'autre stats
 
 #### Objet spé

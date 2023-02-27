@@ -1,0 +1,35 @@
+Difficulté -> etage,difficulté,theme
+1 SPAWN VIDE
+2 NOMBRE MAXIMUM Salle
+3 Salle coffre + rare avec + diff et possibilté d'avoir un peu de mod en fonction de la diff
+4 Boss minimum 1 par étage
+5 Salle de mob plus frequent et avec plus de mob et des types variés
+6 plus on est éloigné du spawn plus on a de chance de croisé le boss ou l'escalier(Boss>escalier>spawn)
+7 plus de chest au mileu et moins au centre ou éloigner
+
+Salle de BOSS:
+contient Boss et ennemie
+
+Salle Chest:
+Chest et ennemies
+
+Salle Mob:
+ennemies, structure
+
+NextFloor:
+escalier
+
+SPAWN:
+rien
+
+
+       E  
+    E C   
+ EE C C C 
+C C EECCC 
+C CCCEECCC
+CCE ES EC 
+ CEE E E C
+CC C  C   
+    C C   
+   CCCE   
