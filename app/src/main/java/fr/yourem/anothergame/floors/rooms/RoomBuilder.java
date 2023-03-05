@@ -39,7 +39,6 @@ public class RoomBuilder {
     public RoomBuilder(){
         setSize(0);
         setSize(1);
-        System.out.println(Arrays.toString(sizes)+ lastSeed);
 
     }
     public RoomBuilder setType(RoomType type) {

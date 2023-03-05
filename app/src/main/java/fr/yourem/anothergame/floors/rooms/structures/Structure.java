@@ -18,6 +18,10 @@ public class Structure extends Positioned {
         position[0] = y;
     }
     public void use(){
-        isUsed = true;
+        isUsed = !isUsed;
+    }
+
+    public Image getImage() {
+        return image;
     }
 }

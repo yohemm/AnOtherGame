@@ -42,7 +42,7 @@ public class Floor {
         Random r = new Random(seed);
         double freqChest = freqChest();
         RoomBuilder[][] initMap = new RoomBuilder[size][size];
-        Room[][] map = new Room[size][size];
+        map = new Room[size][size];
 
         initMap[size/2][size/2] = new RoomBuilder(seed).setType(RoomType.SPAWN);
         for (int j = 0; j < size;j++){
@@ -52,7 +52,7 @@ public class Floor {
                 double proportionaldistance = distanceToSpawn/(double)(size/2);
                 double nearestChest = Math.abs(proportionaldistance-bestDistanceChest);
 
-                /*suppreession des Rooms en trop*/
+                /*suppreession pseudo aléatoir de la room*/
                 if (r.nextInt((int)((1.1-proportionaldistance)*100))< 100*removeRoom) {
                     initMap[j][i] = null;
                 }else{
@@ -66,24 +66,30 @@ public class Floor {
                 }
             }
         }
+
+        /*filtre des room connecter*/
+        printMap(initMap);
+        System.out.println("--------------");
         int[][] generatable = roomCanBeGenerate(initMap);
-        for (int[] coor : generatable)
-            System.out.println(coor[0]+" "+coor[1]);
 
         for (int j = 0; j < size;j++){
             for (int i = 0; i < size;i++) {
                 boolean find = false;
                 for (int[] coor : generatable)
-                    if (j==coor[0] && i==coor[1])
+                    if (j == coor[0] && i == coor[1]) {
                         find = true;
-                if (!find) initMap[j][i] = null;
+                        break;
+                    }
+                if (!find) initMap[j][i] = null;/*
+                else if (i > size*0.5+r.nextDouble(0.5)*size){
+                    initMap[j][i].setType(RoomType.NEXT_FLOOR)
+                }*/
                 if (initMap[j][i] != null) {
-                    System.out.println("ghgffdqss");
                     this.map[j][i] = initMap[j][i].createRoom(this);
                 }
             }
         }
-        printMap(initMap);
+        printMap();
     }
     public Room getSpawn(){
         if (map[map.length/2][map[0].length/2] != null && map[map.length/2][map[0].length/2].getType() == RoomType.SPAWN){
@@ -147,8 +153,6 @@ public class Floor {
     static private int[] verifyRoom(RoomBuilder[][]map, List<int[]> listCoorRoom, int i, int j){
         if ( i < map.length && i>0  && j< map[i].length && j>0 &&( map[i][j] != null && !listCoorRoomContain(listCoorRoom, i,j))){
             listCoorRoom.add(new int[]{i, j});
-            System.out.print(i);
-            System.out.println(j);
             return new int[] {i,j};
         }
         return null;
@@ -159,7 +163,6 @@ public class Floor {
             List<int[]> newAdd = new ArrayList<>();
             int i = add[0];
             int j = add[1];
-            System.out.println("actual" +i +j);
             int i2;
             int j2;
             i2 = i;
@@ -176,11 +179,9 @@ public class Floor {
             i2 = i-1;
             coor = verifyRoom(map,listCoorRoom,i2,j2);
             if (coor != null) newAdd.add(coor);
-            System.out.println(newAdd.size());
             if(newAdd.size()>0)
                 roomCanBeGenerate(map, listCoorRoom, newAdd);
         }
-        System.out.println("tesst");
     }
     static int[][] roomCanBeGenerate(RoomBuilder[][] map){
         List<int[]> listCoorRoom = new ArrayList<>();

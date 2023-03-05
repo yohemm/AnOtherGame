@@ -30,6 +30,7 @@ public class Application extends javafx.application.Application {
     private static int difficulty = 1;
     private List<KeyCode> pressed = new ArrayList<>();
     private Floor floor = new Floor(0, Theme.JUNGLE,1,10);
+
     private Room currentRoom = floor.getSpawn();
     private Panel panel= new Panel();
     private Panel roomPanel;
@@ -67,6 +68,7 @@ public class Application extends javafx.application.Application {
             Scene scene = new Scene(root, 500, 500);
             ImageView iV = new ImageView(player.getType().getSprite());
             playerPanel.getChildren().add(iV);
+            System.out.println(floor+" "+currentRoom);
             setRoom(currentRoom);
             root.getChildren().add(panel);
             stage.setTitle("AnOtherGame");
