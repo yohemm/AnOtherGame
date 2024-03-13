@@ -1,6 +1,8 @@
 package fr.yourem.anothergame.entities;
 
 import fr.yourem.anothergame.Positioned;
+import fr.yourem.anothergame.entities.players.Player;
+import fr.yourem.anothergame.floors.rooms.Room;
 import javafx.scene.image.Image;
 
 import java.util.Arrays;
@@ -11,8 +13,9 @@ public class Entity extends Positioned {
     protected double[] position = new double[2];
     protected int[] size;
 
-    public void update(){
-        canMoveInDirection = new boolean[][] {{true, true},{true, true}};
+    public void update(Room room){
+        canMoveInDirection = new boolean[][] {{true,true},{true,true}};
+        room.setCanMove(this);
     }
 
     public double getSpeed() {
@@ -71,25 +74,54 @@ public class Entity extends Positioned {
         /*                              up, down, left, right*/
         boolean[][] res = new  boolean[][] {{false, false}, {false, false}};
         // e1 <- e2
-        if (e1.position[1] < e2.position[1] && e2.position[1] <  e1.position[1]+ e1.size[1] && Math.abs(e2.position[0] - e1.position[0])<64){
+        if (e1.position[1] < e2.position[1] && e2.position[1] <  e1.position[1]+ e1.size[1] && Math.abs(e2.position[0] - e1.position[0])<e1.size[0]){
             e1.canMoveInDirection[1][1] = false;
             e2.canMoveInDirection[1][0] = false;
             res[1][0] = true;
         }
         // e1 -> e2
-        if (e2.position[1] < e1.position[1] && e1.position[1] <  e2.position[1]+ e2.size[1] && Math.abs(e2.position[0] - e1.position[0])<64){
+        if (e2.position[1] < e1.position[1] && e1.position[1] <  e2.position[1]+ e2.size[1] && Math.abs(e2.position[0] - e1.position[0])<e1.size[0]){
             e2.canMoveInDirection[1][1] = false;
             e1.canMoveInDirection[1][0] = false;
             res[1][1] = true;
         }
         // e1 |^ e2
-        if (e1.position[0] < e2.position[0] && e2.position[0] <  e1.position[0]+ e1.size[0] && Math.abs(e2.position[1] - e1.position[1])<64){
+        if (e1.position[0] < e2.position[0] && e2.position[0] <  e1.position[0]+ e1.size[0] && Math.abs(e2.position[1] - e1.position[1])<e1.size[1]){
             e1.canMoveInDirection[0][1] = false;
             e2.canMoveInDirection[0][0] = false;
             res[0][0] = true;
         }
         // e1 |v e2
-        if (e2.position[0] < e1.position[0] && e1.position[0] <  e2.position[0]+ e2.size[0] && Math.abs(e2.position[1] - e1.position[1])<64){
+        if (e2.position[0] < e1.position[0] && e1.position[0] <  e2.position[0]+ e2.size[0] && Math.abs(e2.position[1] - e1.position[1])<e1.size[1]){
+            e2.canMoveInDirection[0][1] = false;
+            e1.canMoveInDirection[0][0] = false;
+            res[0][1] = true;
+        }
+        return res;
+    }
+    static public boolean[][] collision(Entity e1, Player e2){
+        /*                              up, down, left, right*/
+        boolean[][] res = new  boolean[][] {{false, false}, {false, false}};
+        // e1 <- e2
+        if (e1.position[1] < e2.position[1]+e2.getVelocity()[1]* e2.speed && e2.position[1] <  e1.position[1]+ e1.size[1]+e2.getVelocity()[1]* e2.speed && Math.abs(e2.position[0] - e1.position[0])<e1.size[0]*2){
+            e1.canMoveInDirection[1][1] = false;
+            e2.canMoveInDirection[1][0] = false;
+            res[1][0] = true;
+        }
+        // e1 -> e2
+        if (e2.position[1] < e1.position[1]+e2.getVelocity()[1]* e2.speed && e1.position[1] <  e2.position[1]+ e2.size[1]+e2.getVelocity()[1]* e2.speed && Math.abs(e2.position[0] - e1.position[0])<e1.size[0]*2){
+            e2.canMoveInDirection[1][1] = false;
+            e1.canMoveInDirection[1][0] = false;
+            res[1][1] = true;
+        }
+        // e1 |^ e2
+        if (e1.position[0] < e2.position[0] + e2.getVelocity()[0]* e2.speed && e2.position[0] <  e1.position[0]+ e1.size[0] + e2.getVelocity()[0]* e2.speed && Math.abs(e2.position[1] - e1.position[1])<e1.size[1]*2){
+            e1.canMoveInDirection[0][1] = false;
+            e2.canMoveInDirection[0][0] = false;
+            res[0][0] = true;
+        }
+        // e1 |v e2
+        if (e2.position[0] < e1.position[0] + e2.getVelocity()[0]* e2.speed && e1.position[0] <  e2.position[0]+ e2.size[0] + e2.getVelocity()[0]* e2.speed && Math.abs(e2.position[1] - e1.position[1])<e1.size[1]*2){
             e2.canMoveInDirection[0][1] = false;
             e1.canMoveInDirection[0][0] = false;
             res[0][1] = true;

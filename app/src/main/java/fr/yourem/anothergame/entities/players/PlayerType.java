@@ -16,7 +16,7 @@ public enum PlayerType {
         PlayerBuilder playerBuilder = new PlayerBuilder().setType(this);
         switch (this){
             case WOODBODY :
-                return (PlayerBuilder) playerBuilder.setDoge(1).setControl(10).setSpeed(15).setPosition(new double[]{0,0});
+                return (PlayerBuilder) playerBuilder.setDoge(1).setControl(8).setSpeed(8).setPosition(new double[]{0,0});
             default:
                 return (PlayerBuilder) playerBuilder;
         }

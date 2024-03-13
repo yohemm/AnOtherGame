@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Application extends javafx.application.Application {
@@ -76,18 +77,17 @@ public class Application extends javafx.application.Application {
             AnimationTimer boucle = new AnimationTimer() {
                 @Override
                 public void handle(long l) {
-                    player.update();
+                    player.update(currentRoom);
                     currentRoom.ennemiesUpdate(ennemyIVs, player, floor);
                     player.setDirection(new int[]{
                             (!pressed.contains(KeyCode.UP) && !pressed.contains(KeyCode.DOWN))||(pressed.contains(KeyCode.UP) && pressed.contains(KeyCode.DOWN)) ? 0 : (pressed.contains(KeyCode.DOWN) ?1:-1),
                             (!pressed.contains(KeyCode.LEFT) && !pressed.contains(KeyCode.RIGHT))||(pressed.contains(KeyCode.LEFT) && pressed.contains(KeyCode.RIGHT)) ? 0 : (pressed.contains(KeyCode.RIGHT) ?1:-1)
                     });
+                    player.move();
                     Room potentialRoom = currentRoom.verifyTakeDoors(player, floor);
                     if (potentialRoom != null){
                         setRoom(potentialRoom);
                     }
-                    currentRoom.setCanMove(player);
-                    player.move();
                     iV.setY(player.getPosition()[0]);
                     iV.setX(player.getPosition()[1]);
 

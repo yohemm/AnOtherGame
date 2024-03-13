@@ -75,12 +75,16 @@ public class Player extends Entity {
         }
     }
 
-
     @Override
     public void move() {
         velocity[0] += direction[0]*((double)control/(double)maxStat)*speed;
         velocity[1] += direction[1]*((double)control/(double)maxStat)*speed;
+        System.out.println(velocity);
         if (velocity[0]>0){
+            if (!canMoveInDirection[0][1]){
+                System.out.println("azdfqfsqd");
+                velocity[0]=0;
+            }
             if (velocity[0]>speed){
                 velocity[0]=speed;
             }
@@ -90,10 +94,11 @@ public class Player extends Entity {
                 if (direction[0]<0)
                     velocity[1]=0;
             }
-            if (!canMoveInDirection[0][1]){
+        } else if(velocity[0]<0){
+            if (!canMoveInDirection[0][0]){
+                System.out.println("azdfqfsqd");
                 velocity[0]=0;
             }
-        } else if(velocity[0]<0){
             if (velocity[0] < -speed){
                 velocity[0]=-speed;
             }
@@ -102,11 +107,12 @@ public class Player extends Entity {
                 if (velocity[0]>0)
                     velocity[0] = 0;
             }
-            if (!canMoveInDirection[0][0]){
-                velocity[0]=0;
-            }
         }
         if (velocity[1]>0){
+            if (!canMoveInDirection[1][1]){
+                System.out.println("azdfqfsqd");
+                velocity[1]=0;
+            }
             if (velocity[1]>speed){
                 velocity[1]=speed;
             }
@@ -115,11 +121,12 @@ public class Player extends Entity {
                 if (velocity[1]<0)
                     velocity[1] = 0;
             }
-            if (!canMoveInDirection[1][1]){
-                velocity[1]=0;
-            }
 
         } else if(velocity[1]<0){
+            if (!canMoveInDirection[1][0]){
+                System.out.println("azdfqfsqd");
+                velocity[1]=0;
+            }
             if (velocity[1]< -speed){
                 velocity[1]=-speed;
             }
@@ -128,10 +135,8 @@ public class Player extends Entity {
                 if (velocity[1]>0)
                     velocity[1] = 0;
             }
-            if (!canMoveInDirection[1][0]){
-                velocity[1]=0;
-            }
         }
+        System.out.println(Arrays.toString(velocity));
         position[0]+=velocity[0];
         position[1]+=velocity[1];
     }
@@ -155,6 +160,9 @@ public class Player extends Entity {
 
     public void setVelocity(double[] velocity) {
         this.velocity = velocity;
+    }
+    public double[] getVelocity() {
+        return velocity;
     }
 
     public PlayerType getType() {
